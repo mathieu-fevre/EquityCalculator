@@ -1,16 +1,17 @@
 from functools import reduce
 from itertools import groupby
 
-from .hand_evaluator import HandEvaluator
+from hand_evaluator import HandEvaluator
 
 class GameEvaluator:
 
     @classmethod
     def judge(self, table):
         winners = self.__find_winners_from(table.get_community_card(), table.seats.players)
-        hand_info = self.__gen_hand_info_if_needed(table.seats.players, table.get_community_card())
-        prize_map = self.__calc_prize_distribution(table.get_community_card(), table.seats.players)
-        return winners, hand_info, prize_map
+        # hand_info = self.__gen_hand_info_if_needed(table.seats.players, table.get_community_card())
+        # prize_map = self.__calc_prize_distribution(table.get_community_card(), table.seats.players)
+        # return winners, hand_info, prize_map
+        return winners
 
 
     @classmethod
