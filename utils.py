@@ -1,4 +1,5 @@
 import random
+from itertools import combinations
 
 from card import Card
 from deck import Deck
@@ -75,6 +76,33 @@ def equity_calculator(hole_cards_1, hole_cards_2, community_cards=[]):
             count += 0.5
     return round(float(count)/NUMBER_OF_SIMULATIONS, 4)
 
+def exact_equity_calculator(hole_cards_1, hole_cards_2):
+    tot = 0
+    id_list = list(range(1,53))
+    id_list.remove(hole_cards_1[0].to_id())
+    id_list.remove(hole_cards_1[1].to_id())
+    id_list.remove(hole_cards_2[0].to_id())
+    id_list.remove(hole_cards_2[1].to_id())
+    cards_list = [Card.from_id(i) for i in id_list]
+    count = 0
+    comb_list = combinations(cards_list, 5)
+    # print(len(list(comb_list)))
+    for comb in comb_list:
+        tot +=1
+        if not tot % 10000:
+            print(tot)
+        community_card = list(comb)
+        score_1 = HandEvaluator.eval_hand(hole_cards_1, community_card)
+        score_2 = HandEvaluator.eval_hand(hole_cards_2, community_card)
+        if score_1 > score_2:
+            count += 1
+        elif score_1 == score_2:
+            count += 0.5
+    print(count)
+    return 100*float(count)/tot
+            
+            
+            
 hand1 = [Card.from_str('SA'), Card.from_str('HA')]
 hand2 = [Card.from_str('DA'), Card.from_str('SK')]
-print(equity_calculator(hand1, hand2))
+print(exact_equity_calculator(hand1, hand2))
